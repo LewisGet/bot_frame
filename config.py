@@ -28,3 +28,6 @@ labels = ["none", "up", "down", "left", "right", "up and left", "up and right", 
 # 圖片縮小一半三偵影格橫放
 input_size = 600, 150
 save_model_path = os.path.join(".", "ckpt", "alexnet")
+save_dataset_base_path = os.path.join(".", "dataset")
+save_dataset_content = os.path.join(save_dataset_base_path, "x.npy")
+save_dataset_label = os.path.join(save_dataset_base_path, "y.npy")
