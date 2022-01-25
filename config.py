@@ -1,3 +1,5 @@
+import os
+
 recorder = {
     "prefix": {
         "x": 1920, "y": 0
@@ -21,3 +23,8 @@ bx, by = recorder["base_size"]["x"], recorder["base_size"]["y"]
 
 recorder["start"]["x"], recorder["start"]["y"] = recorder["prefix"]["x"] + cx - int(bx / 2), recorder["prefix"]["y"] + cy - int(by / 2)
 recorder["end"]["x"], recorder["end"]["y"] = recorder["prefix"]["x"] + cx + int(bx / 2), recorder["prefix"]["y"] + cy + int(by / 2)
+
+labels = ["none", "up", "down", "left", "right", "up and left", "up and right", "down and left", "down and right"]
+# 圖片縮小一半三偵影格橫放
+input_size = 600, 150
+save_model_path = os.path.join(".", "ckpt", "alexnet")
