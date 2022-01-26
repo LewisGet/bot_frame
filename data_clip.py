@@ -53,7 +53,7 @@ if __name__ == '__main__':
             cv2.imshow("save", images_to_save)
 
             if cv2.waitKey(25) & 0xFF == ord("q"):
-                label = int(input("label %s : \n" % str(list(enumerate(config.labels)))))
+                label = [int(i) for i in list(input("label %s : \n" % str(list(enumerate(config.labels)))))]
                 cv2.destroyAllWindows()
                 xs.append(images_to_save)
                 ys.append(label)
