@@ -7,6 +7,19 @@ import time
 import os
 
 
+def images_pre_save_resize(images):
+    for i in range(3):
+        img = cv2.resize(images[i], (int(config.recorder["base_size"]["x"] / 2), int(config.recorder["base_size"]["y"] / 2)))
+        img = cv2.cvtColor(img, cv2.COLOR_RGBA2GRAY)
+
+        if i == 0:
+            return_image = img
+        else:
+            return_image = np.concatenate((return_image, img), axis=1)
+
+    return return_image
+
+
 if __name__ == '__main__':
     try:
         xs, ys = np.load(config.save_dataset_content), np.load(config.save_dataset_label)
@@ -27,29 +40,14 @@ if __name__ == '__main__':
         }
 
         while "Screen capturing":
-            images_to_view = []
-            images_to_save = []
+            images = []
 
             for i in range(3):
                 img = np.array(sct.grab(monitor))
-                img_b, img_s = img[:], img[:]
+                images.append(img)
+                cv2.imshow("save % d" % i, img)
 
-                img_b = cv2.resize(img_b, (1920, 1080))
-                img_s = cv2.resize(img_s, (int(config.recorder["base_size"]["x"] / 2), int(config.recorder["base_size"]["y"] / 2)))
-                img_s = cv2.cvtColor(img_s, cv2.COLOR_RGBA2GRAY)
-
-                cv2.imshow("display_b %d" % i, img_b)
-                cv2.imshow("display %d" % i, img_s)
-
-                images_to_view.extend(img_b.tolist())
-
-                if i == 0:
-                    images_to_save = img_s
-                else:
-                    images_to_save = np.concatenate((images_to_save, img_s), axis=1)
-
-            print(np.array(images_to_save).shape)
-
+            images_to_save = images_pre_save_resize(images)
             cv2.imshow("save", images_to_save)
 
             if cv2.waitKey(25) & 0xFF == ord("q"):
