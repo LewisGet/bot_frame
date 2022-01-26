@@ -20,6 +20,15 @@ def images_pre_save_resize(images):
     return return_image
 
 
+def array_indexes_to_label_array(indexes):
+    return_value = np.zeros(len(config.labels), np.int8)
+
+    for index in indexes:
+        return_value[index] = 1
+
+    return return_value
+
+
 if __name__ == '__main__':
     try:
         xs, ys = np.load(config.save_dataset_content), np.load(config.save_dataset_label)
@@ -51,7 +60,7 @@ if __name__ == '__main__':
             cv2.imshow("save", images_to_save)
 
             if cv2.waitKey(25) & 0xFF == ord("q"):
-                label = [int(i) for i in list(input("label %s : \n" % str(list(enumerate(config.labels)))))]
+                label = array_indexes_to_label_array([int(i) for i in list(input("label %s : \n" % str(list(enumerate(config.labels)))))])
                 cv2.destroyAllWindows()
                 xs.append(images_to_save)
                 ys.append(label)
