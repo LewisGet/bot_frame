@@ -7,6 +7,8 @@ import win32con
 import ctypes
 import time
 import config
+import mouse
+import keyboard
 
 
 SendInput = ctypes.windll.user32.SendInput
@@ -47,6 +49,60 @@ class Input_I(ctypes.Union):
 class Input(ctypes.Structure):
     _fields_ = [("type", ctypes.c_ulong),
                 ("ii", Input_I)]
+
+
+def mouse_event_process(datasets):
+    left_click, right_click = 0, 0
+    x, y = 0, 0
+
+    for data in datasets:
+        if type(data) is mouse._mouse_event.MoveEvent:
+            x, y = data.x, data.y
+        elif type(data) is mouse._mouse_event.ButtonEvent:
+            if data.event_type == "down":
+                if data.button == "left":
+                    left_click = 1
+                elif data.button == "right":
+                    right_click = 1
+            elif data.event_type == "up":
+                if data.button == "left":
+                    left_click = -1
+                elif data.button == "right":
+                    right_click = -1
+
+    return [x, y, left_click, right_click]
+
+def keyboard_event_process(datasets):
+    def key_register():
+        w, a, s, d, sapce, e, r, q, z, ctrl = [0] * 10
+        return locals().keys()
+
+    keys = key_register()
+    move_x, move_y = 0
+
+    for data in datasets:
+        for i, v in enumerate(keys):
+            if data.event_type == "down":
+                value = 1
+            elif data.event_type == "up":
+                value = -1
+
+            if v == data.name:
+                keys[v] = value
+
+    if keys["w"] > 0:
+        move_y = 1
+
+    if keys["s"] > 0:
+        move_y = -1
+
+    if keys["d"] > 0:
+        move_x = 1
+
+    if keys["a"] > 0:
+        move_x = -1
+
+    return keys
 
 
 class Mouse:
