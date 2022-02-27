@@ -9,7 +9,7 @@ import config
 
 if __name__ == '__main__':
     try:
-        xs, ys = np.load(config.save_dataset_content), np.load(config.save_dataset_label)
+        xs, ys = np.load(config.save_dataset_content), np.load(config.save_dataset_label, allow_pickle=True)
         xs, ys = xs.tolist(), ys.tolist()
     except:
         xs, ys = [], []
@@ -37,12 +37,12 @@ if __name__ == '__main__':
             mouse.hook(mouse_events.append)
             keyboard.start_recording()
 
-            time.sleep(0.01)
+            time.sleep(0.02)
 
             mouse.unhook(mouse_events.append)
             keyboard_events = keyboard.stop_recording()
 
-            labels = [unit.mouse_event_process(mouse_events[-30:]), unit.keyboard_event_process(keyboard_events[-30:])]
+            labels = [unit.mouse_event_process(mouse_events[:]), unit.keyboard_event_process(keyboard_events[:])]
 
             if labels[0][3] == 1:
 	            xs.append(images_to_save)
