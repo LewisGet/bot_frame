@@ -74,7 +74,7 @@ def mouse_event_process(datasets):
 
 def keyboard_event_process(datasets):
     def key_register():
-        w, a, s, d, sapce, e, r, q, z, ctrl = [0] * 10
+        w, a, s, d, space, e, r, q, z, ctrl = [0] * 10
         return locals()
 
     keys = key_register()
