@@ -64,9 +64,11 @@ if __name__ == '__main__':
                 mouse.unhook(mouse_events.append)
                 keyboard_events = keyboard.stop_recording()
 
+                labels = [unit.mouse_event_process(mouse_events[-30:]), unit.keyboard_event_process(keyboard_events[-30:])]
                 xs.append(images_to_save)
-                ys.append([unit.mouse_event_process(mouse_events[-30:]), unit.keyboard_event_process(keyboard_events[-30:])])
+                ys.append(labels)
                 cv2.imshow("save", images_to_save)
+                print(labels, "\n")
 
                 i = 0
 
