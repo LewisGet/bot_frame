@@ -102,6 +102,9 @@ def keyboard_event_process(datasets):
     if keys["a"] > 0:
         move_x = -1
 
+    keys['move_x'] = move_x
+    keys['move_y'] = move_y
+
     return keys
 
 
