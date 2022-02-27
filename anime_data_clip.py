@@ -19,7 +19,7 @@ if __name__ == '__main__':
     with mss.mss() as sct:
         # Part of the screen to capture
         monitor = {
-            "top": 40,
+            "top": 0,
             "left": 1920,
             "width": 1920,
             "height": 1080
@@ -31,9 +31,10 @@ if __name__ == '__main__':
 
         while "Screen capturing":
             img = np.array(sct.grab(monitor))
-            img_s = cv2.resize(img[:], (200, 150))
+            img_s = cv2.resize(img[:], (480, 270))
             img_s = cv2.cvtColor(img_s, cv2.COLOR_RGBA2RGB)
 
+            """
             img_hsv = img_s[:]
             img_hsv = cv2.cvtColor(img_hsv, cv2.COLOR_RGB2HSV)
             img_r, img_g, img_b = [img_hsv[:]] * 3
@@ -52,6 +53,8 @@ if __name__ == '__main__':
             img_s = cv2.cvtColor(img_s, cv2.COLOR_RGB2GRAY)
 
             view_image = np.concatenate((img_s, img_r, img_g, img_b), axis=0)
+            """
+            view_image = img_s[:]
 
             if i == 0:
                 mouse.hook(mouse_events.append)
