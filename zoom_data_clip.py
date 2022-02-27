@@ -27,31 +27,31 @@ if __name__ == '__main__':
         images_to_save = []
         mouse_events = []
 
-        i = 0
+        mouse.hook(mouse_events.append)
+        keyboard.start_recording()
 
         while "Screen capturing":
             img = np.array(sct.grab(monitor))
             img_s = cv2.cvtColor(img[:], cv2.COLOR_RGBA2RGB)
             images_to_save = img_s[:]
 
-            mouse.hook(mouse_events.append)
-            keyboard.start_recording()
-
             time.sleep(0.02)
 
-            mouse.unhook(mouse_events.append)
-            keyboard_events = keyboard.stop_recording()
+            _keyboard_events, _ = keyboard._recording
+            keyboard_events = list(_keyboard_events.queue)
 
-            labels = [unit.mouse_event_process(mouse_events[:]), unit.keyboard_event_process(keyboard_events[:])]
+            labels = [unit.mouse_event_process(mouse_events[-500:]), unit.keyboard_event_process(keyboard_events[-500:])]
 
             if labels[0][3] == 1:
-	            xs.append(images_to_save)
-	            ys.append(labels)
-	            print(labels, "\n")
+                xs.append(images_to_save)
+                ys.append(labels)
+                print(labels, "\n")
 
-            cv2.imshow("save", images_to_save)
+                cv2.imshow("save", images_to_save)
 
             if cv2.waitKey(25) & 0xFF == ord("q"):
+                mouse.unhook(mouse_events.append)
+                keyboard_events = keyboard.stop_recording()
                 cv2.destroyAllWindows()
                 np.save(config.save_dataset_content, xs)
                 np.save(config.save_dataset_label, ys)
